@@ -80,9 +80,6 @@ python train.py --epochs 100
 # Test model accuracy
 python test.py
 
-# Run web application
-streamlit run app.py
-
 # Validate entire system
 python validate_system.py
 ```
