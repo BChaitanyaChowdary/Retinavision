@@ -80,6 +80,15 @@ from db_integration import (
 # Initialize database with app
 init_db(app)
 
+# Auto-create database tables on startup (for Render free tier without Shell access)
+try:
+    with app.app_context():
+        db.create_all()
+        print("✅ Database tables created successfully")
+except Exception as e:
+    print(f"⚠️ Database initialization warning: {e}")
+    print("Database tables may already exist or will be created on first use")
+
 # Configuration
 INPUT_SIZE = 128
 MODEL_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'my_modeltrained3.h5')

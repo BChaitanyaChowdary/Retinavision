@@ -71,16 +71,14 @@ Now that backend is working, deploy the frontend:
    ```
 6. Click **Create Static Site**
 
-### 2. Initialize Database
+### 2. Database Already Initialized ✅
 
-After frontend deploys, initialize the database:
+**Good news!** Database tables are created automatically when the backend starts.
 
-1. Go to backend service → **Shell** tab
-2. Run:
-   ```bash
-   cd backend
-   python init_database.py
-   ```
+No manual steps needed - check the backend logs to confirm:
+```
+✅ Database tables created successfully
+```
 
 ### 3. Test Complete System
 

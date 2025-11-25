@@ -36,13 +36,13 @@
    ```
 5. Click **Create Static Site**
 
-## Step 4: Initialize Database (1 min)
-1. Go to backend service → **Shell** tab
-2. Run:
-   ```bash
-   cd backend
-   python init_database.py
-   ```
+## Step 4: Database Auto-Initialized ✅
+**No action needed!** Database tables are created automatically when backend starts.
+
+Check logs for confirmation:
+```
+✅ Database tables created successfully
+```
 
 ## ✅ Done!
 Open your frontend URL and start using RetinaVision!
