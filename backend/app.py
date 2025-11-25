@@ -836,20 +836,36 @@ def load_model_on_startup():
         # Load model with custom objects to handle old Keras format
         try:
             model = load_model(MODEL_PATH, compile=False)
-        except Exception as e:
-            print(f"⚠️ Error with standard load, trying with safe_mode: {e}")
-            # Try loading with safe_mode for older Keras models
+        except Exception as e1:
+            print(f"⚠️ Error with standard load: {e1}")
             try:
+                # Try with safe_mode=False
                 import tensorflow.keras as keras
                 model = keras.models.load_model(MODEL_PATH, compile=False, safe_mode=False)
-            except:
-                # Last resort: load with custom objects
-                from tensorflow.keras.layers import InputLayer
-                model = load_model(
-                    MODEL_PATH, 
-                    compile=False,
-                    custom_objects={'InputLayer': InputLayer}
-                )
+            except Exception as e2:
+                print(f"⚠️ Error with safe_mode=False: {e2}")
+                try:
+                    # Try with custom objects
+                    from tensorflow.keras.layers import InputLayer
+                    model = load_model(
+                        MODEL_PATH, 
+                        compile=False,
+                        custom_objects={'InputLayer': InputLayer}
+                    )
+                except Exception as e3:
+                    print(f"⚠️ Error with custom objects: {e3}")
+                    print("\n" + "="*60)
+                    print("❌ MODEL LOADING FAILED")
+                    print("="*60)
+                    print("\nThe model was trained with an older Keras version.")
+                    print("To fix this:")
+                    print("1. Run 'python convert_model.py' locally")
+                    print("2. Replace the model file")
+                    print("3. Or retrain the model with TensorFlow 2.15")
+                    print("\nThe app will continue without the model.")
+                    print("API endpoints will return appropriate errors.")
+                    print("="*60 + "\n")
+                    return False
         print(f"✅ Model loaded successfully from {MODEL_PATH}")
         
         # Check if the last layer is a softmax layer
@@ -915,10 +931,13 @@ def download_report(filename):
 @app.route('/', methods=['GET'])
 def root():
     """Root endpoint - Welcome message"""
+    global model
     return jsonify({
         'service': 'RetinaVision API',
         'version': '1.0.0',
         'status': 'running',
+        'model_loaded': model is not None,
+        'model_status': 'ready' if model is not None else 'needs_conversion',
         'message': 'Welcome to RetinaVision - AI-Powered Eye Disease Detection',
         'endpoints': {
             'health': '/api/health',
@@ -927,7 +946,8 @@ def root():
             'history': '/api/history',
             'patients': '/api/patients'
         },
-        'documentation': 'https://github.com/BChaitanyaChowdary/Retinavision'
+        'documentation': 'https://github.com/BChaitanyaChowdary/Retinavision',
+        'note': 'Model requires conversion - see convert_model.py' if model is None else None
     })
 
 @app.route('/api/test', methods=['GET'])
