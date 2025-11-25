@@ -903,6 +903,24 @@ def download_report(filename):
         print(f"❌ Report download error: {e}")
         return jsonify({'error': 'Report not found'}), 404
 
+@app.route('/', methods=['GET'])
+def root():
+    """Root endpoint - Welcome message"""
+    return jsonify({
+        'service': 'RetinaVision API',
+        'version': '1.0.0',
+        'status': 'running',
+        'message': 'Welcome to RetinaVision - AI-Powered Eye Disease Detection',
+        'endpoints': {
+            'health': '/api/health',
+            'predict': '/api/predict_visualize',
+            'statistics': '/api/stats',
+            'history': '/api/history',
+            'patients': '/api/patients'
+        },
+        'documentation': 'https://github.com/BChaitanyaChowdary/Retinavision'
+    })
+
 @app.route('/api/test', methods=['GET'])
 def test_endpoint():
     """Test endpoint to verify API is working"""
