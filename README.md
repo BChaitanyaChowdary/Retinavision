@@ -104,7 +104,6 @@ eye-disease-classification/
 ├── 📁 logs/                     # System logs
 ├── 📁 samples/                  # Sample images
 ├── 📁 test_images/              # Test images
-├── 📄 app.py                    # Streamlit web application
 ├── 📄 train.py                  # Model training script
 ├── 📄 test.py                   # Model testing script
 ├── 📄 gradcam.py                # Grad-CAM implementation
