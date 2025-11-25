@@ -824,7 +824,23 @@ def load_model_on_startup():
             print(f"❌ Model file not found at {MODEL_PATH}")
             return False
             
-        model = load_model(MODEL_PATH, compile=False)
+        # Load model with custom objects to handle old Keras format
+        try:
+            model = load_model(MODEL_PATH, compile=False)
+        except Exception as e:
+            print(f"⚠️ Error with standard load, trying with safe_mode: {e}")
+            # Try loading with safe_mode for older Keras models
+            try:
+                import tensorflow.keras as keras
+                model = keras.models.load_model(MODEL_PATH, compile=False, safe_mode=False)
+            except:
+                # Last resort: load with custom objects
+                from tensorflow.keras.layers import InputLayer
+                model = load_model(
+                    MODEL_PATH, 
+                    compile=False,
+                    custom_objects={'InputLayer': InputLayer}
+                )
         print(f"✅ Model loaded successfully from {MODEL_PATH}")
         
         # Check if the last layer is a softmax layer
@@ -1188,15 +1204,6 @@ if load_model_on_startup():
     print("Model loaded successfully on startup")
 else:
     print("Failed to load model on startup")
-
-@app.route('/api/health', methods=['GET'])
-def health_check():
-    """Health check endpoint for Render"""
-    return jsonify({
-        'status': 'healthy',
-        'service': 'RetinaVision Backend',
-        'timestamp': datetime.now().isoformat()
-    })
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
