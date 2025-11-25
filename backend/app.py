@@ -1189,5 +1189,16 @@ if load_model_on_startup():
 else:
     print("Failed to load model on startup")
 
+@app.route('/api/health', methods=['GET'])
+def health_check():
+    """Health check endpoint for Render"""
+    return jsonify({
+        'status': 'healthy',
+        'service': 'RetinaVision Backend',
+        'timestamp': datetime.now().isoformat()
+    })
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    debug = os.environ.get('FLASK_DEBUG', 'False').lower() == 'true'
+    app.run(host='0.0.0.0', port=port, debug=debug)
