@@ -79,7 +79,7 @@ This guide will help you deploy your RetinaVision application to Render with bot
 
 4. **Add Environment Variable**:
    ```
-   REACT_APP_API_URL = [your backend URL from Step 2]
+   https://retinavision.onrender.com
    ```
    Example: `https://retinavision-backend.onrender.com`
 

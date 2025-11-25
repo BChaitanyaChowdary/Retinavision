@@ -49,3 +49,12 @@ Thumbs.db
 # Logs
 *.log
 logs/
+
+# Generated files (PDFs and visualizations)
+backend/eye_disease_report_*.pdf
+backend/static/visualizations/*.png
+backend/uploads/*
+
+# Keep folder structure
+!backend/static/visualizations/.gitkeep
+!backend/uploads/.gitkeep

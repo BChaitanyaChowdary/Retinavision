@@ -115,8 +115,29 @@ const PatientPanel = ({ refreshKey }) => {
   };
 
   const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleString();
+    if (!dateString) return 'N/A';
+    
+    try {
+      // Parse the date string (handles both ISO format and other formats)
+      const date = new Date(dateString);
+      
+      // Check if date is valid
+      if (isNaN(date.getTime())) return 'Invalid Date';
+      
+      // Format to local timezone with readable format
+      return date.toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+      });
+    } catch (error) {
+      console.error('Date formatting error:', error);
+      return 'Invalid Date';
+    }
   };
 
   const getConfidenceColor = (confidence) => {

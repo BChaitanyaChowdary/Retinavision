@@ -82,6 +82,7 @@ const PredictionPanel = ({ onPredictionComplete }) => {
 
     setLoading(true);
     setError(null);
+    setPrediction(null); // Clear previous prediction to show loading state
 
     const formData = new FormData();
     formData.append('image', selectedImage);
@@ -629,20 +630,91 @@ const PredictionPanel = ({ onPredictionComplete }) => {
               </Button>
 
               {loading && (
-                <Box sx={{ mt: 2 }}>
+                <Box 
+                  className="fade-in"
+                  sx={{ 
+                    mt: 3,
+                    p: 4,
+                    background: 'linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%)',
+                    borderRadius: 4,
+                    border: '2px solid #a78bfa',
+                    textAlign: 'center'
+                  }}
+                >
+                  {/* Animated Medical Icon */}
+                  <Box sx={{ position: 'relative', display: 'inline-block', mb: 2 }}>
+                    <MedicalServices 
+                      sx={{ 
+                        fontSize: 80,
+                        color: '#7c3aed',
+                        animation: 'pulse 1.5s ease-in-out infinite'
+                      }} 
+                    />
+                    <CircularProgress 
+                      size={100}
+                      thickness={2}
+                      sx={{ 
+                        position: 'absolute',
+                        top: -10,
+                        left: -10,
+                        color: '#a78bfa',
+                        animation: 'spin 2s linear infinite'
+                      }}
+                    />
+                  </Box>
+                  
+                  <Typography 
+                    variant="h6" 
+                    sx={{ 
+                      fontWeight: 700, 
+                      color: '#5b21b6',
+                      mb: 1,
+                      animation: 'pulse 2s ease-in-out infinite'
+                    }}
+                  >
+                    🔬 AI Analysis in Progress
+                  </Typography>
+                  
+                  <Typography variant="body2" sx={{ color: '#6d28d9', mb: 2 }}>
+                    Our advanced neural network is analyzing the retinal image...
+                  </Typography>
+                  
                   <LinearProgress 
                     sx={{ 
                       height: 8, 
                       borderRadius: 4,
+                      background: '#e9d5ff',
                       '& .MuiLinearProgress-bar': {
                         borderRadius: 4,
-                        background: 'linear-gradient(90deg, #f59e0b 0%, #d97706 100%)'
+                        background: 'linear-gradient(90deg, #7c3aed 0%, #a78bfa 50%, #7c3aed 100%)',
+                        backgroundSize: '200% 100%',
+                        animation: 'shimmer 2s infinite'
                       }
                     }} 
                   />
-                  <Typography variant="body2" align="center" sx={{ mt: 1, fontWeight: 500, color: '#92400e' }}>
-                    Processing with AI model...
-                  </Typography>
+                  
+                  <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center', gap: 1, flexWrap: 'wrap' }}>
+                    <Chip 
+                      label="✓ Image Loaded" 
+                      size="small"
+                      sx={{ bgcolor: '#dcfce7', color: '#14532d', fontWeight: 600 }}
+                    />
+                    <Chip 
+                      label="⚡ Processing..." 
+                      size="small"
+                      sx={{ 
+                        bgcolor: '#fef3c7', 
+                        color: '#92400e', 
+                        fontWeight: 600,
+                        animation: 'pulse 1s ease-in-out infinite'
+                      }}
+                    />
+                    <Chip 
+                      label="🎯 Generating Heatmaps" 
+                      size="small"
+                      sx={{ bgcolor: '#dbeafe', color: '#1e40af', fontWeight: 600 }}
+                    />
+                  </Box>
                 </Box>
               )}
             </Box>
@@ -781,7 +853,15 @@ const PredictionPanel = ({ onPredictionComplete }) => {
               <Divider sx={{ my: 2, backgroundColor: 'rgba(255, 255, 255, 0.3)' }} />
               <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', alignItems: 'center', position: 'relative', zIndex: 1 }}>
                 <Chip 
-                  label={new Date().toLocaleString()}
+                  label={new Date().toLocaleString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: true
+                  })}
                   sx={{ 
                     fontWeight: 'bold', 
                     fontSize: '0.8rem',

@@ -119,15 +119,17 @@ model = None
 needs_softmax = False
 
 
+# Class names in the order the model was trained
+# This order MUST match the training data folder structure
 class_names = [
     'Cataract',
-    'Choroidal Neovascularization',
-    'Diabetic Macular Edema',
-    'Diabetic Retinopathy',
+    'Choroidal Neovascularization',  
+    'Diabetic Macular Edema',  
+    'Diabetic Retinopathy',     
     'Drusen',
-    'Glaucoma',
-    'Normal',
-    'Normal-1',
+    'Glaucoma',                        # DRUSEN - Index 2
+    'Normal',                         # NORMAL - Index 3
+    'Normal-1',                       # Index 7
 ]
 print(f"Initial class names: {class_names}")
 

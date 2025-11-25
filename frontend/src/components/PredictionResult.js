@@ -367,7 +367,15 @@ const PredictionResult = ({ prediction }) => {
         <Typography variant="body2" sx={{ display: 'flex', alignItems: 'flex-start' }}>
           <Info sx={{ fontSize: 20, mr: 1, flexShrink: 0 }} />
           <span>
-            <strong>Analysis completed:</strong> {new Date().toLocaleString()} | 
+            <strong>Analysis completed:</strong> {new Date().toLocaleString('en-US', {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+              second: '2-digit',
+              hour12: true
+            })} | 
             <strong> Patient ID:</strong> {prediction.patient_id || 'N/A'} | 
             <strong> Report:</strong> {prediction.report_filename || 'Generating...'}
           </span>
