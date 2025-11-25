@@ -29,7 +29,26 @@ OpenCV: 4.8.1.78 (headless)
 NumPy: 1.24.3
 ```
 
-### 2. Model File Too Large
+### 2. Model Loading Error - Keras Version Mismatch
+
+**Error**: `Unrecognized keyword arguments: ['batch_shape']`
+
+**Cause**: Model was saved with older Keras/TensorFlow version
+
+**Solution**: Updated model loading with compatibility fallbacks
+
+The code now tries multiple loading methods:
+1. Standard load
+2. Load with `safe_mode=False`
+3. Load with custom InputLayer object
+
+**If still failing**, retrain and save model with current TensorFlow:
+```python
+# Save model in compatible format
+model.save('my_modeltrained3.h5', save_format='h5')
+```
+
+### 3. Model File Too Large
 
 **Error**: `File size exceeds GitHub limit`
 
