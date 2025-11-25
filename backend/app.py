@@ -16,6 +16,20 @@ import traceback
 import uuid
 from pdf_generator import EyeDiseaseReportGenerator
 
+# Memory optimization for low-RAM environments
+import gc
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+tf.config.set_soft_device_placement(True)
+# Limit TensorFlow memory growth
+gpus = tf.config.list_physical_devices('GPU')
+if gpus:
+    try:
+        for gpu in gpus:
+            tf.config.experimental.set_memory_growth(gpu, True)
+    except RuntimeError as e:
+        print(f"GPU memory config: {e}")
+
 # Import visualization utilities
 from visualization_utils import generate_visualizations
 
@@ -791,6 +805,10 @@ def predict_visualize():
             print(f"⚠️ Database save failed (continuing anyway): {db_error}")
         
         # Database save complete - no more JSONL files
+        
+        # Force garbage collection to free memory
+        gc.collect()
+        K.clear_session()
         
         return jsonify(response_data)
         
